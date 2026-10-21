@@ -20,10 +20,14 @@ against the Bill that didn't pass.
    high-risk AI processing before it went live? (DPA Section 31 — the exact
    gap that struck down Huduma Namba, Maisha Namba, and Worldcoin in court)
 3. **Cross-border transfer** — where does the data actually run, and is the
-   transfer out of Kenya accounted for? (DPA Part VI)
-4. **Data localization** — if the platform touches a strategic sector
-   (basic education, health care, public finance, civil registration), is
-   there a Kenya-based copy of the data? (DPA Section 50 + Regulation 26)
+   transfer out of Kenya accounted for? A safeguards-or-necessity test that
+   applies to every controller, every transfer. (DPA Sections 48–49)
+4. **Data localization** — Regulation 26(2) names six purposes that must be
+   processed in Kenya, or keep a Kenya-based copy: civil registration,
+   elections, public finance *run by a state organ*, protected computer
+   systems, **basic education** (no state-organ limit — applies to private
+   platforms too), and primary/secondary health care. (DPA Section 50 +
+   Regulation 26)
 5. **AI-training lawful basis** — is personal data going to an AI vendor's
    consumer channel (which may train on it) instead of an enterprise channel
    that doesn't? (ODPC draft AI guidance, July 2026)

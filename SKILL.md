@@ -48,6 +48,25 @@ Treat the script's output as a lead list, not a verdict. Read the files it
 surfaces. If a hit looks relevant, open it and check the actual logic — a
 grep match is not evidence on its own.
 
+### Primary sources beat paraphrase
+
+If the target repo (or the user's workspace) has the actual legal texts —
+the Act, the Regulations, ODPC guidance PDFs, often downloaded from
+odpc.go.ke into a folder like `kdpa/` — **read them directly before writing
+a legal citation.** Don't rely on a news article's summary, a secondary
+source's paraphrase, or your own memory of what a section says.
+
+This matters concretely: an earlier version of this skill described
+Regulation 26's localization duty as covering "education, health care, and
+public finance — run by state organs." That's wrong. The regulation's
+actual text scopes the state-organ qualifier to the public-finance clause
+only; the education and health-care clauses carry no such limit. That
+difference changes whether the rule applies to a private platform at all.
+Getting a citation like this wrong doesn't just misstate a fact — it can
+flip a finding from "applies" to "doesn't apply." Pull the primary PDF,
+`grep` or read it directly, and quote the operative sentence rather than
+describing it from recollection.
+
 ## 3. Answer the 8 questions
 
 For each question below: search further if the discovery output didn't settle
@@ -77,18 +96,62 @@ say so and move on — don't force a verdict where there's nothing to assess.
    anywhere in the repo, that names the AI features specifically — not just a
    general compliance doc.
 
-3. **Cross-border data transfer — DPA Part VI.**
-   Restricts moving personal data out of Kenya. Look for: cloud region
-   config (`GCP_LOCATION`, `AWS_REGION`, `AZURE_REGION`, database host,
-   Terraform/CloudFormation region blocks, deploy workflow env vars), and
-   whether any compliance doc names a lawful basis for the transfer.
+3. **Cross-border data transfer — DPA Sections 48–49.**
+   Section 48: "A data controller or data processor may transfer personal
+   data to another country only where— (a)/(b) [proof to the Data
+   Commissioner of] appropriate safeguards... or (c) the transfer is
+   necessary— (i) for the performance of a contract between the data
+   subject and the data controller... (ii) ...in the interest of the data
+   subject... (iii) for any matter of public interest; (iv) for the
+   establishment, exercise or defence of a legal claim; (v) [to protect]
+   vital interests...; or (vi) for the purpose of compelling legitimate
+   interests..." This is a **safeguards-or-necessity test that applies to
+   every data controller, every transfer, for any reason** — it is the
+   universal baseline, lighter in substance than Question 4 but much
+   broader in reach. It does not ban data from leaving Kenya; it requires
+   the controller to be able to show why the transfer is sound. Look for:
+   cloud region config (`GCP_LOCATION`, `AWS_REGION`, `AZURE_REGION`,
+   database host, Terraform/CloudFormation region blocks, deploy workflow
+   env vars), and whether any document names which Section 48 ground is
+   being relied on — most platforms can rely on 48(c)(i), contract
+   performance, but it is rarely written down anywhere.
 
-4. **Data localization for strategic sectors — DPA Section 50 + Regulation 26.**
-   Certain sectors — including public finance, civil registration, basic
-   education, and primary/secondary health care — must be processed in
-   Kenya, or keep a serving copy there. If the platform touches any of these
-   sectors, check whether any part of its data or processing has a Kenya
-   presence, or whether this has been assessed at all.
+4. **Data localization for strategic sectors — DPA Section 50 + Regulation
+   26(2).** Section 50 is the enabling power ("the Cabinet Secretary may
+   prescribe... certain nature of processing that shall only be effected
+   through a server or a data centre located in Kenya"). Regulation 26 is
+   where that power was exercised. Regulation 26(1): a controller
+   processing data for one of six listed purposes must "(a) process such
+   personal data through a server and data centre located in Kenya; **or**
+   (b) store at least one serving copy of the concerned personal data in a
+   data centre located in Kenya" — note the "or": one serving copy
+   satisfies it, a full migration is not required. The six purposes in
+   Regulation 26(2), and **only these six**:
+   - (a) civil registration / legal identity management systems
+   - (b) running elections
+   - (c) administering public finances, **"by any state organ"**
+   - (d) a system designated "protected" under the Computer Misuse and
+     Cybercrime Act, 2018
+   - (e) **"offering any form of early childhood education and basic
+     education under the Basic Education Act, 2013"**
+   - (f) primary or secondary health care for a data subject in the country
+
+   **The state-organ qualifier in (c) applies only to (c).** It is not a
+   header over the whole list. Clauses (a), (b), (d), (e), and (f) carry no
+   such limit — they apply to whoever carries out that activity, public or
+   private. This is easy to get wrong by paraphrase (an earlier draft of
+   this skill read it as "education and health care run by state organs,"
+   which the regulation's actual text does not say). **Always read the
+   regulation's own text before writing a verdict on this question** — see
+   the note below on primary sources.
+
+   Build a table like the one above, applying each of the six clauses to
+   the target platform directly, with a yes/no and why. If any clause
+   applies (most commonly (e), for any platform that delivers curriculum
+   content, tutoring, or assessment to school-age students), the status is
+   Not answered unless the repo shows a Kenya-based server or a Kenya-based
+   serving copy of the data — and the fix to recommend is the lighter of
+   the two options in 26(1), a serving copy, not a full regional migration.
 
 5. **Lawful basis to train a third-party AI model — ODPC draft AI guidance
    (July 2026).** The guidance says personal data being publicly accessible
